@@ -58,7 +58,7 @@ const main = async () => {
   try {
     await connection.getRepository(User).save({
       ...new User(),
-      id: 1,
+      // id: 1,
       firstName: "lavina",
       lastName: "masdani",
       age: 22,
