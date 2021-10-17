@@ -8,10 +8,21 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import dotenv from "dotenv";
-
-dotenv.config({ path: `${__dirname}/.env` });
+import { readFileSync } from "fs";
 
 const app = express();
+
+const env = (() => {
+  try {
+    return JSON.parse(
+      readFileSync(`${__dirname}/env.json`, { encoding: "utf8" })
+    );
+  } catch (e) {
+    return null;
+  }
+})();
+
+// console.log("env:", env);
 
 @Entity()
 export class User {
@@ -44,21 +55,20 @@ export class User {
 }
 
 const main = async () => {
-  console.log("Getting connection...", process.env.DB_NAME);
+  console.log("Getting connection...", env?.dbName);
 
   const connection = await createConnection({
     type: "mysql",
-    host: process.env.DB_HOST,
+    host: env?.dbHost ?? "",
     port: 3306,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    username: env?.dbUsername ?? "",
+    password: env?.dbPassword ?? "",
+    database: env?.dbName ?? "",
     entities: [User],
     synchronize: true,
   });
 
   console.log("Getting connection ok...", process.env.DB_NAME);
-
 
   try {
     console.error("Populating init data..");
