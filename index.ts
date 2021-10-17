@@ -56,6 +56,7 @@ const main = async () => {
   });
 
   try {
+    console.log("Getting connection...", process.env.DB_NAME);
     await connection.getRepository(User).save({
       ...new User(),
       // id: 1,
@@ -64,8 +65,10 @@ const main = async () => {
       age: 22,
     });
   } catch (e) {
-    console.error(e);
+    console.error("Getting connection error", e);
   }
+
+  console.log("Getting connection ok...", process.env.DB_NAME);
 
   app.get("/", async (req, res) => {
     try {
