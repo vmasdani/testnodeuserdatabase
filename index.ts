@@ -44,6 +44,8 @@ export class User {
 }
 
 const main = async () => {
+  console.log("Getting connection...", process.env.DB_NAME);
+
   const connection = await createConnection({
     type: "mysql",
     host: process.env.DB_HOST,
@@ -55,8 +57,12 @@ const main = async () => {
     synchronize: true,
   });
 
+  console.log("Getting connection ok...", process.env.DB_NAME);
+
+
   try {
-    console.log("Getting connection...", process.env.DB_NAME);
+    console.error("Populating init data..");
+
     await connection.getRepository(User).save({
       ...new User(),
       // id: 1,
@@ -65,7 +71,7 @@ const main = async () => {
       age: 22,
     });
   } catch (e) {
-    console.error("Getting connection error", e);
+    console.error("Populate init error", e);
   }
 
   console.log("Getting connection ok...", process.env.DB_NAME);
