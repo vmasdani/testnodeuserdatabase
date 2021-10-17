@@ -55,6 +55,18 @@ const main = async () => {
     synchronize: true,
   });
 
+  try {
+    await connection.getRepository(User).save({
+      ...new User(),
+      id: 1,
+      firstName: "lavina",
+      lastName: "masdani",
+      age: 22,
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
   app.get("/", async (req, res) => {
     try {
       res.json(await connection.getRepository(User).find());
@@ -64,22 +76,22 @@ const main = async () => {
     }
   });
 
-  app.get("/test-add", async (req, res) => {
-    try {
-      res.json(
-        await connection.getRepository(User).save({
-          ...new User(),
-          id: 1,
-          firstName: "lavina",
-          lastName: "masdani",
-          age: 22,
-        })
-      );
-    } catch (e) {
-      res.status(500);
-      res.send(e);
-    }
-  });
+  // app.get("/test-add", async (req, res) => {
+  //   try {
+  //     res.json(
+  //       await connection.getRepository(User).save({
+  //         ...new User(),
+  //         id: 1,
+  //         firstName: "lavina",
+  //         lastName: "masdani",
+  //         age: 22,
+  //       })
+  //     );
+  //   } catch (e) {
+  //     res.status(500);
+  //     res.send(e);
+  //   }
+  // });
 };
 
 main();
